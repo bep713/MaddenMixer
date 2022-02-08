@@ -1,5 +1,6 @@
 ﻿using EASoundbankTools.Model.SBR;
 using EASoundbankTools.Utility;
+using System;
 using System.IO;
 
 namespace EASoundbankTools.Parser.SBR
@@ -36,6 +37,10 @@ namespace EASoundbankTools.Parser.SBR
             if (SBRFile.Header.Endianness == SBRFile.SBREndianness.Little)
             {
                 reader.Endianness = EndiannessAwareBinaryReader.EndiannessType.Little;
+            }
+            else if (SBRFile.Header.Endianness != SBRFile.SBREndianness.Big)
+            {
+                throw new ArgumentException("The file passed in was not an SBR file.");
             }
 
             reader.BaseStream.Position = 0xA;

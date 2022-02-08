@@ -8,10 +8,32 @@
 
   <ItemGroup>
     <None Remove="Data\SBRParser\sbr_test.sbr" />
+    <None Remove="Data\SoundbankParser\sbr_file.sbr" />
+    <None Remove="Data\SoundbankParser\sbr_harmony.sbr" />
+    <None Remove="Data\SoundbankParser\sbr_nwr.sbr" />
+    <None Remove="Data\SoundbankParser\sbr_standalone.sbr" />
+    <None Remove="Data\SoundbankParser\sbs_file.sbs" />
+    <None Remove="Data\SoundbankParser\sbs_harmony.sbs" />
+    <None Remove="Data\SoundbankParser\sbs_nwr.sbs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Data\SBRParser\sbr_test.sbr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\SoundbankParser\sbr_harmony.sbr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\SoundbankParser\sbr_nwr.sbr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\SoundbankParser\sbr_standalone.sbr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\SoundbankParser\sbs_harmony.sbs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\SoundbankParser\sbs_nwr.sbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
