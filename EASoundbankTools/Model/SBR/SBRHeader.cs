@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
+// Thank you to NicknineTheEagle
+// https://github.com/NicknineTheEagle/Frostbite-Scripts/blob/master/frostbite3/sbr.py
+
 namespace EASoundbankTools.Model.SBR
 {
     public class SBRHeader
@@ -12,18 +15,18 @@ namespace EASoundbankTools.Model.SBR
         public uint TableOffset { get; set; }
         public uint DataOffset { get; set; }
 
-        public SBRType SBRType
+        public SBRFile.SBRType SBRType
         {
             get
             {
-                return (SBRType)SBRTypeRaw;
+                return (SBRFile.SBRType)SBRTypeRaw;
             }
         }
-        public SBREndianness Endianness
+        public SBRFile.SBREndianness Endianness
         {
             get
             {
-                return (SBREndianness)Magic;
+                return (SBRFile.SBREndianness)Magic;
             }
         }
     }
