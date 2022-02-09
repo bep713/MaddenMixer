@@ -30,11 +30,38 @@ namespace EASoundbankTools.Parser
             return soundbank;
         }
 
-        private List<SoundbankEntry> ParseSoundbankEntries(string SbrPath)
+        public ISoundbank ParseSbr(string SbrPath)
         {
-            List<SoundbankEntry> soundbankEntries = new List<SoundbankEntry>();
             SBRParser parser = new SBRParser();
             SBRFile file = parser.Parse(SbrPath);
+            ISoundbank soundbank;
+
+            if (IsSbrFileStandalone(file))
+            {
+                soundbank = new Soundbank_SbrStandalone();
+            }
+            else
+            {
+                soundbank = new Soundbank_SbrSbs();
+            }
+
+            soundbank.SbrPath = SbrPath;
+            soundbank.Entries = ParseSoundbankEntries(file);
+
+            return soundbank;
+        }
+
+        private List<SoundbankEntry> ParseSoundbankEntries(string SbrPath)
+        {
+            SBRParser parser = new SBRParser();
+            SBRFile file = parser.Parse(SbrPath);
+
+            return ParseSoundbankEntries(file);            
+        }
+
+        private List<SoundbankEntry> ParseSoundbankEntries(SBRFile file)
+        {
+            List<SoundbankEntry> soundbankEntries = new List<SoundbankEntry>();
 
             switch (file.Header.SBRType)
             {
@@ -76,7 +103,8 @@ namespace EASoundbankTools.Parser
 
         public bool IsSbrFileStandalone(SBRFile file)
         {
-            return file.DSets[0].Definitions.Find(x => x.Name == "OFF") == null;
+            return file.Header.SBRType != SBRFile.SBRType.NewWaveResource
+                && file.DSets[0].Definitions.Find(x => x.Name == "OFF") == null;
         }
     }
 }

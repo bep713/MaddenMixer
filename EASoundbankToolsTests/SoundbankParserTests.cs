@@ -26,6 +26,10 @@ namespace EASoundbankToolsTests
         private ISoundbank Soundbank_Harmony;
         private ISoundbank Soundbank_Standalone;
 
+        private ISoundbank Soundbank_Parse_Standalone;
+        private ISoundbank Soundbank_Parse_NonStandalone_Harmony;
+        private ISoundbank Soundbank_Parse_NonStandalone_NewWave;
+
         [SetUp]
         public void Setup()
         {
@@ -33,6 +37,10 @@ namespace EASoundbankToolsTests
             Soundbank_NewWave = Parser.ParseSbrSbs(TestFilePathSbr_NewWave, TestFilePathSbs_NewWave);
             Soundbank_Harmony = Parser.ParseSbrSbs(TestFilePathSbr_Harmony, TestFilePathSbs_Harmony);
             Soundbank_Standalone = Parser.ParseSbrStandalone(TestFilePathSbr_Standalone);
+
+            Soundbank_Parse_Standalone = Parser.ParseSbr(TestFilePathSbr_Standalone);
+            Soundbank_Parse_NonStandalone_Harmony = Parser.ParseSbr(TestFilePathSbr_Harmony);
+            Soundbank_Parse_NonStandalone_NewWave = Parser.ParseSbr(TestFilePathSbr_NewWave);
         }
 
         /* NEW WAVE RESOURCE ======================================================*/
@@ -167,6 +175,40 @@ namespace EASoundbankToolsTests
             Assert.That(Soundbank_Standalone.Entries[1].Name, Is.EqualTo("1"));
             Assert.That(Soundbank_Standalone.Entries[2].Name, Is.EqualTo("2"));
             Assert.That(Soundbank_Standalone.Entries[11].Name, Is.EqualTo("11"));
+        }
+
+        // PARSE SBR ======================================================
+        [Test]
+        public void ParseSbr_Standalone()
+        {
+            Assert.That(Soundbank_Parse_Standalone, Is.TypeOf(typeof(Soundbank_SbrStandalone)));
+
+            Assert.That(Soundbank_Parse_Standalone.Entries[0].RawOffsetInSbr, Is.EqualTo(4));
+            Assert.That(Soundbank_Parse_Standalone.Entries[1].RawOffsetInSbr, Is.EqualTo(86564));
+            Assert.That(Soundbank_Parse_Standalone.Entries[2].RawOffsetInSbr, Is.EqualTo(106080));
+            Assert.That(Soundbank_Parse_Standalone.Entries[11].RawOffsetInSbr, Is.EqualTo(70160));
+        }
+
+        [Test]
+        public void ParseSbr_SbrSbs_Harmony()
+        {
+            Assert.That(Soundbank_Parse_NonStandalone_Harmony, Is.TypeOf(typeof(Soundbank_SbrSbs)));
+
+            Assert.That(Soundbank_Parse_NonStandalone_Harmony.Entries[0].Offset, Is.EqualTo(878368));
+            Assert.That(Soundbank_Parse_NonStandalone_Harmony.Entries[2].Offset, Is.EqualTo(989888));
+            Assert.That(Soundbank_Parse_NonStandalone_Harmony.Entries[4].Offset, Is.EqualTo(1123872));
+            Assert.That(Soundbank_Parse_NonStandalone_Harmony.Entries[55].Offset, Is.EqualTo(1787904));
+        }
+
+        [Test]
+        public void ParseSbr_SbrSbs_NewWave()
+        {
+            Assert.That(Soundbank_Parse_NonStandalone_NewWave, Is.TypeOf(typeof(Soundbank_SbrSbs)));
+
+            Assert.That(Soundbank_Parse_NonStandalone_NewWave.Entries[0].Offset, Is.EqualTo(0));
+            Assert.That(Soundbank_Parse_NonStandalone_NewWave.Entries[1].Offset, Is.EqualTo(47420));
+            Assert.That(Soundbank_Parse_NonStandalone_NewWave.Entries[2].Offset, Is.EqualTo(77880));
+            Assert.That(Soundbank_Parse_NonStandalone_NewWave.Entries[6].Offset, Is.EqualTo(157544));
         }
     }
 }

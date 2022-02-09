@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MaddenMixer.Model
+namespace MaddenMixer
 {
-    internal class SBRFile
+    public class WavGenerationJob : ProcessJob
     {
+        public string OutputPath { get; set; }
     }
 }

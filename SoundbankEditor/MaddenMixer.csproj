@@ -9,6 +9,64 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Libs\avcodec-vgmstream-58.dll" />
+    <None Remove="Libs\avformat-vgmstream-58.dll" />
+    <None Remove="Libs\avutil-vgmstream-56.dll" />
+    <None Remove="Libs\jansson.dll" />
+    <None Remove="Libs\libatrac9.dll" />
+    <None Remove="Libs\libcelt-0061.dll" />
+    <None Remove="Libs\libcelt-0110.dll" />
+    <None Remove="Libs\libg719_decode.dll" />
+    <None Remove="Libs\libmpg123-0.dll" />
+    <None Remove="Libs\libspeex.dll" />
+    <None Remove="Libs\libvorbis.dll" />
+    <None Remove="Libs\swresample-vgmstream-3.dll" />
+    <None Remove="test.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Libs\avcodec-vgmstream-58.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\avformat-vgmstream-58.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\avutil-vgmstream-56.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\jansson.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\libatrac9.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\libcelt-0061.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\libcelt-0110.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\libg719_decode.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\libmpg123-0.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\libspeex.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\libvorbis.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\swresample-vgmstream-3.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\test.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EASoundbankTools\EASoundbankTools.csproj" />
   </ItemGroup>
 
