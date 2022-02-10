@@ -11,8 +11,8 @@ namespace MaddenMixer
         private SoundPlayer player;
         private int currentlyPlayingRow = -1;
 
-        private readonly string LOADED_SBR_PATH = Path.Combine(Directory.GetCurrentDirectory(), "Temp/loaded_file.sbr");
-        private readonly string LOADED_SBS_PATH = Path.Combine(Directory.GetCurrentDirectory(), "Temp/loaded_file.sbs");
+        private readonly string LOADED_SBR_PATH = Path.Combine(Directory.GetCurrentDirectory(), "Temp\\loaded_file.sbr");
+        private readonly string LOADED_SBS_PATH = Path.Combine(Directory.GetCurrentDirectory(), "Temp\\loaded_file.sbs");
 
         private enum EDITOR_STATE
         {
@@ -107,11 +107,15 @@ namespace MaddenMixer
                 case EDITOR_STATE.NO_FILE_LOADED:
                     soundbankEntryBindingSource.DataSource = null;
                     toolStripStatusLabel1.Text = "Ready";
+                    SetControlColumnsVisibility(false);
                     break;
 
                 case EDITOR_STATE.INVALID_FILE_LOADED:
+                    btnOpenSbs.Visible = false;
                     soundbankEntryBindingSource.DataSource = null;
+
                     toolStripStatusLabel1.Text = "Invalid File";
+                    SetControlColumnsVisibility(false);
                     break;
 
                 case EDITOR_STATE.SBR_LOADED_NEED_SBS:
@@ -119,8 +123,7 @@ namespace MaddenMixer
                     soundbankEntryBindingSource.DataSource = soundbank.Entries;
 
                     toolStripStatusLabel1.Text = "Loaded SBR. Need SBS file...";
-                    dataGridView1.Columns[2].Visible = false;
-                    dataGridView1.Columns[3].Visible = false;
+                    SetControlColumnsVisibility(false);
                     break;
 
                 case EDITOR_STATE.SBR_STANDALONE_LOADED:
@@ -128,18 +131,22 @@ namespace MaddenMixer
                     soundbankEntryBindingSource.DataSource = soundbank.Entries;
 
                     toolStripStatusLabel1.Text = "Loaded Standalone SBR Successfully";
-                    dataGridView1.Columns[2].Visible = true;
-                    dataGridView1.Columns[3].Visible = true;
+                    SetControlColumnsVisibility(true);
                     break;
 
                 case EDITOR_STATE.SBR_SBS_LOADED:
                     soundbankEntryBindingSource.DataSource = soundbank.Entries;
 
                     toolStripStatusLabel1.Text = "Loaded SBR and SBS Successfully";
-                    dataGridView1.Columns[2].Visible = true;
-                    dataGridView1.Columns[3].Visible = true;
+                    SetControlColumnsVisibility(true);
                     break;
             }
+        }
+
+        private void SetControlColumnsVisibility(bool visibile)
+        {
+            dataGridView1.Columns[2].Visible = visibile;
+            dataGridView1.Columns[3].Visible = visibile;
         }
 
         private void btnOpenSbs_Click(object sender, EventArgs e)
@@ -160,6 +167,16 @@ namespace MaddenMixer
         {
             switch (dataGridView1.CurrentCell.ColumnIndex)
             {
+                case 2:
+                    if (IsEditorReady())
+                    {
+                        if (openMp3Dialog.ShowDialog() == DialogResult.OK)
+                        {
+                            await ConvertMp3(openMp3Dialog.FileName);
+                        }
+                    }
+
+                    break;
                 case 3:
                     if (IsEditorReady())
                     {
@@ -192,6 +209,41 @@ namespace MaddenMixer
                 || editorState == EDITOR_STATE.SBR_SBS_LOADED;
         }
 
+        private async Task ConvertMp3(string mp3FilePath)
+        {
+            toolStripStatusLabel1.Text = "Converting MP3 file...";
+            ((DataGridViewButtonCell)dataGridView1.CurrentCell).UseColumnTextForButtonValue = false;
+            dataGridView1.CurrentCell.Value = "Working...";
+
+            var job = await MusicConverter.ConvertMp3ToSbs(mp3FilePath);
+            log.AddToLog(job.StandardOutput);
+            log.AddToLog(job.ErrorOutput);
+
+            logOutput.Text = log.GetLogAsString();
+            ScrollToBottomOfLog();
+
+            if (job.Status)
+            {
+                toolStripStatusLabel1.Text = "Conversion successful. Replacing...";
+                log.AddToLog("MP3 file conversion successful.");
+
+                // Replace here
+
+                toolStripStatusLabel1.Text = "Song replaced.";
+                ResetReplaceButton(dataGridView1.CurrentRow.Index);
+            }
+            else
+            {
+                ResetReplaceButton(dataGridView1.CurrentRow.Index);
+                toolStripStatusLabel1.Text = "Failed to convert MP3 file, check log";
+            }
+        }
+
+        private void ResetReplaceButton(int row)
+        {
+            dataGridView1.Rows[row].Cells[2].Value = "Replace...";
+        }
+
         private async Task LoadAndPlaySong()
         {
             toolStripStatusLabel1.Text = "Loading song...";
@@ -213,6 +265,7 @@ namespace MaddenMixer
                 player.SoundLocation = job.OutputPath;
                 player.Load();
                 player.Play();
+
                 musicState = MUSIC_STATE.PLAYING;
 
                 currentlyPlayingRow = songToPlayIndex;

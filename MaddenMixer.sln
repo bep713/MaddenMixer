@@ -5,9 +5,9 @@ VisualStudioVersion = 17.1.32127.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaddenMixer", "SoundbankEditor\MaddenMixer.csproj", "{6DEBF7DD-31F3-4EF9-9E32-AE5D9F02A3F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EASoundbankTools", "EASoundbankTools\EASoundbankTools.csproj", "{AF86ACAC-2702-4152-977E-05EDFE48B710}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EASoundbankTools", "EASoundbankTools\EASoundbankTools.csproj", "{AF86ACAC-2702-4152-977E-05EDFE48B710}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EASoundbankToolsTests", "EASoundbankToolsTests\EASoundbankToolsTests.csproj", "{4494BEF8-C6A6-48C9-A514-0F59E804FA8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EASoundbankToolsTests", "EASoundbankToolsTests\EASoundbankToolsTests.csproj", "{4494BEF8-C6A6-48C9-A514-0F59E804FA8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -85,6 +85,7 @@ namespace EASoundbankTools.Parser
                         soundbankEntries.Add(entry);
                     }
                     break;
+
                 case SBRFile.SBRType.NewWaveResource:
                     for (int i = 0; i < file.DSets[3].NumberOfElements; i++)
                     {

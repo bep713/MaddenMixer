@@ -32,6 +32,10 @@
             this.lbl_Title = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.offsetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReplaceSong = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.PlaySong = new System.Windows.Forms.DataGridViewButtonColumn();
             this.soundbankEntryBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.openSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnOpenSbr = new System.Windows.Forms.Button();
@@ -42,10 +46,7 @@
             this.logOutput = new System.Windows.Forms.RichTextBox();
             this.btnOpenSbs = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.offsetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReplaceSong = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.PlaySong = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.openMp3Dialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.soundbankEntryBindingSource)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -73,7 +74,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(28, 15);
             this.label1.TabIndex = 1;
-            this.label1.Text = "v0.2";
+            this.label1.Text = "v0.3";
             // 
             // dataGridView1
             // 
@@ -95,6 +96,40 @@
             this.dataGridView1.Size = new System.Drawing.Size(776, 261);
             this.dataGridView1.TabIndex = 2;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.nameDataGridViewTextBoxColumn.Width = 64;
+            // 
+            // offsetDataGridViewTextBoxColumn
+            // 
+            this.offsetDataGridViewTextBoxColumn.DataPropertyName = "Offset";
+            this.offsetDataGridViewTextBoxColumn.HeaderText = "Offset";
+            this.offsetDataGridViewTextBoxColumn.Name = "offsetDataGridViewTextBoxColumn";
+            this.offsetDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // ReplaceSong
+            // 
+            this.ReplaceSong.HeaderText = "Replace Song";
+            this.ReplaceSong.Name = "ReplaceSong";
+            this.ReplaceSong.ReadOnly = true;
+            this.ReplaceSong.Text = "Replace...";
+            this.ReplaceSong.UseColumnTextForButtonValue = true;
+            this.ReplaceSong.Visible = false;
+            // 
+            // PlaySong
+            // 
+            this.PlaySong.HeaderText = "Play Song";
+            this.PlaySong.Name = "PlaySong";
+            this.PlaySong.ReadOnly = true;
+            this.PlaySong.Text = "Play";
+            this.PlaySong.UseColumnTextForButtonValue = true;
+            this.PlaySong.Visible = false;
             // 
             // soundbankEntryBindingSource
             // 
@@ -201,39 +236,10 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(776, 26);
             this.flowLayoutPanel1.TabIndex = 10;
             // 
-            // nameDataGridViewTextBoxColumn
+            // openMp3Dialog
             // 
-            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.nameDataGridViewTextBoxColumn.Width = 64;
-            // 
-            // offsetDataGridViewTextBoxColumn
-            // 
-            this.offsetDataGridViewTextBoxColumn.DataPropertyName = "Offset";
-            this.offsetDataGridViewTextBoxColumn.HeaderText = "Offset";
-            this.offsetDataGridViewTextBoxColumn.Name = "offsetDataGridViewTextBoxColumn";
-            this.offsetDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // ReplaceSong
-            // 
-            this.ReplaceSong.HeaderText = "Replace Song";
-            this.ReplaceSong.Name = "ReplaceSong";
-            this.ReplaceSong.ReadOnly = true;
-            this.ReplaceSong.Text = "Replace...";
-            this.ReplaceSong.UseColumnTextForButtonValue = true;
-            this.ReplaceSong.Visible = false;
-            // 
-            // PlaySong
-            // 
-            this.PlaySong.HeaderText = "Play Song";
-            this.PlaySong.Name = "PlaySong";
-            this.PlaySong.ReadOnly = true;
-            this.PlaySong.Text = "Play";
-            this.PlaySong.UseColumnTextForButtonValue = true;
-            this.PlaySong.Visible = false;
+            this.openMp3Dialog.Filter = "mp3 files|*.mp3|All files|*.*";
+            this.openMp3Dialog.Title = "Open MP3 File";
             // 
             // MaddenMixer
             // 
@@ -281,5 +287,6 @@
         private DataGridViewTextBoxColumn offsetDataGridViewTextBoxColumn;
         private DataGridViewButtonColumn ReplaceSong;
         private DataGridViewButtonColumn PlaySong;
+        private OpenFileDialog openMp3Dialog;
     }
 }

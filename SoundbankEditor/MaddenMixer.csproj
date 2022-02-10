@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Libs\audio.dll" />
     <None Remove="Libs\avcodec-vgmstream-58.dll" />
     <None Remove="Libs\avformat-vgmstream-58.dll" />
     <None Remove="Libs\avutil-vgmstream-56.dll" />
@@ -20,11 +21,15 @@
     <None Remove="Libs\libmpg123-0.dll" />
     <None Remove="Libs\libspeex.dll" />
     <None Remove="Libs\libvorbis.dll" />
+    <None Remove="Libs\snrtool.exe" />
     <None Remove="Libs\swresample-vgmstream-3.dll" />
     <None Remove="test.exe" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Libs\audio.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Libs\avcodec-vgmstream-58.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -56,6 +61,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Libs\libvorbis.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Libs\snrtool.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Libs\swresample-vgmstream-3.dll">

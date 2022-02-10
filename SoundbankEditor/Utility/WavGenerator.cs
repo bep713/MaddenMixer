@@ -18,50 +18,41 @@ namespace MaddenMixer
         {
             WavGenerationJob job = new WavGenerationJob
             {
+                ProcessExePath = vgmPath,
                 OutputPath = "test.wav"
             };
 
-            using var proc = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = vgmPath,
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    Arguments = "-o " + job.OutputPath + " -s " + songIndex + " \"" + filePath + "\"",
-                }
-            };
+            await job.ExecuteAsync("-o " + job.OutputPath + " -s " + songIndex + " \"" + filePath + "\"");
 
-            proc.Start();
-            await proc.WaitForExitAsync();
+            //using var proc = new Process
+            //{
+            //    StartInfo = new ProcessStartInfo
+            //    {
+            //        FileName = vgmPath,
+            //        CreateNoWindow = true,
+            //        UseShellExecute = false,
+            //        RedirectStandardError = true,
+            //        RedirectStandardOutput = true,
+            //        Arguments = "-o " + job.OutputPath + " -s " + songIndex + " \"" + filePath + "\"",
+            //    }
+            //};
 
-            job.StandardOutput = ReadLogStream(proc.StandardOutput);
-            job.ErrorOutput = ReadLogStream(proc.StandardError);
+            //proc.Start();
+            //await proc.WaitForExitAsync();
 
-            if (job.ErrorOutput.Count > 0)
-            {
-                job.Status = false;
-            }
-            else
-            {
-                job.Status = true;
-            }
+            //job.StandardOutput = ReadLogStream(proc.StandardOutput);
+            //job.ErrorOutput = ReadLogStream(proc.StandardError);
+
+            //if (job.ErrorOutput.Count > 0)
+            //{
+            //    job.Status = false;
+            //}
+            //else
+            //{
+            //    job.Status = true;
+            //}
 
             return job;
-        }
-
-        private static List<string> ReadLogStream(StreamReader stream)
-        {
-            List<string> logs = new List<string>();
-
-            while (!stream.EndOfStream)
-            {
-                logs.Add(stream.ReadLine());
-            }
-
-            return logs;
         }
     }
 }
