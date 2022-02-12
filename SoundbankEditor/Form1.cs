@@ -29,6 +29,15 @@ namespace MaddenMixer
             STOPPED
         }
 
+        private enum DATAGRID_COLUMNS : int
+        {
+            Name = 0,
+            Offset = 1,
+            Codec = 2,
+            Replace = 3,
+            Play = 4
+        }
+
         private EDITOR_STATE editorState = EDITOR_STATE.NO_FILE_LOADED;
         private MUSIC_STATE musicState = MUSIC_STATE.STOPPED;
 
@@ -143,10 +152,11 @@ namespace MaddenMixer
             }
         }
 
-        private void SetControlColumnsVisibility(bool visibile)
+        private void SetControlColumnsVisibility(bool visible)
         {
-            dataGridView1.Columns[2].Visible = visibile;
-            dataGridView1.Columns[3].Visible = visibile;
+            dataGridView1.Columns[(int)DATAGRID_COLUMNS.Codec].Visible = visible;
+            dataGridView1.Columns[(int)DATAGRID_COLUMNS.Replace].Visible = visible;
+            dataGridView1.Columns[(int)DATAGRID_COLUMNS.Play].Visible = visible;
         }
 
         private void btnOpenSbs_Click(object sender, EventArgs e)
@@ -156,6 +166,9 @@ namespace MaddenMixer
                 File.Delete(LOADED_SBS_PATH);
 
                 ((Soundbank_SbrSbs)soundbank).SbsPath = openSoundFileDialog.FileName;
+                SoundbankParser parser = new SoundbankParser();
+                parser.AddEAAudioHeaderData(soundbank, openSoundFileDialog.FileName);
+
                 editorState = EDITOR_STATE.SBR_SBS_LOADED;
 
                 File.Copy(openSoundFileDialog.FileName, LOADED_SBS_PATH, true);
@@ -167,7 +180,7 @@ namespace MaddenMixer
         {
             switch (dataGridView1.CurrentCell.ColumnIndex)
             {
-                case 2:
+                case (int)DATAGRID_COLUMNS.Replace:
                     if (IsEditorReady())
                     {
                         if (openMp3Dialog.ShowDialog() == DialogResult.OK)
@@ -177,7 +190,7 @@ namespace MaddenMixer
                     }
 
                     break;
-                case 3:
+                case (int)DATAGRID_COLUMNS.Play:
                     if (IsEditorReady())
                     {
                         if (musicState == MUSIC_STATE.STOPPED)
@@ -241,7 +254,7 @@ namespace MaddenMixer
 
         private void ResetReplaceButton(int row)
         {
-            dataGridView1.Rows[row].Cells[2].Value = "Replace...";
+            dataGridView1.Rows[row].Cells[(int)DATAGRID_COLUMNS.Replace].Value = "Replace...";
         }
 
         private async Task LoadAndPlaySong()
@@ -288,7 +301,7 @@ namespace MaddenMixer
 
         private void ResetPlayButton(int row)
         {
-            dataGridView1.Rows[row].Cells[3].Value = "Play";
+            dataGridView1.Rows[row].Cells[(int)DATAGRID_COLUMNS.Play].Value = "Play";
         }
 
         private void StopPlayingMusic()

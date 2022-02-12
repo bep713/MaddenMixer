@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static EASoundbankTools.Model.Enums;
 
 namespace EASoundbankToolsTests
 {
@@ -30,6 +31,8 @@ namespace EASoundbankToolsTests
         private ISoundbank Soundbank_Parse_NonStandalone_Harmony;
         private ISoundbank Soundbank_Parse_NonStandalone_NewWave;
 
+        private ISoundbank Soundbank_ParseSbs;
+
         [SetUp]
         public void Setup()
         {
@@ -41,6 +44,8 @@ namespace EASoundbankToolsTests
             Soundbank_Parse_Standalone = Parser.ParseSbr(TestFilePathSbr_Standalone);
             Soundbank_Parse_NonStandalone_Harmony = Parser.ParseSbr(TestFilePathSbr_Harmony);
             Soundbank_Parse_NonStandalone_NewWave = Parser.ParseSbr(TestFilePathSbr_NewWave);
+
+            Soundbank_ParseSbs = Parser.ParseSbr(TestFilePathSbr_Harmony);
         }
 
         /* NEW WAVE RESOURCE ======================================================*/
@@ -139,13 +144,13 @@ namespace EASoundbankToolsTests
 
         /* STANDALONE ====================================================== */
         [Test]
-        public void ParseSoundbankSbrSbs_NumberOfEntries_Standalone()
+        public void ParseSoundbankSbrStandalone_NumberOfEntries()
         {
             Assert.That(Soundbank_Standalone.Entries.Count, Is.EqualTo(12));
         }
 
         [Test]
-        public void ParseSoundbankSbrSbs_EntryOffsets_Standalone()
+        public void ParseSoundbankSbrStandalone_EntryOffsets()
         {
             Assert.That(Soundbank_Standalone.Entries[0].Offset, Is.EqualTo(92));
             Assert.That(Soundbank_Standalone.Entries[1].Offset, Is.EqualTo(86652));
@@ -154,13 +159,13 @@ namespace EASoundbankToolsTests
         }
 
         [Test]
-        public void ParseSoundbankSbrSbs_SbrPath_Standalone()
+        public void ParseSoundbankSbrStandalone_SbrPath()
         {
             Assert.That(Soundbank_Standalone.SbrPath, Is.EqualTo(TestFilePathSbr_Standalone));
         }
 
         [Test]
-        public void ParseSoundbankSbrSbs_RawOffsetInSbr_Standalone()
+        public void ParseSoundbankSbrStandalone_RawOffsetInSbr()
         {
             Assert.That(Soundbank_Standalone.Entries[0].RawOffsetInSbr, Is.EqualTo(4));
             Assert.That(Soundbank_Standalone.Entries[1].RawOffsetInSbr, Is.EqualTo(86564));
@@ -169,12 +174,28 @@ namespace EASoundbankToolsTests
         }
 
         [Test]
-        public void ParseSoundbankSbrSbs_Name_Standalone()
+        public void ParseSoundbankSbrStandalone_Name()
         {
             Assert.That(Soundbank_Standalone.Entries[0].Name, Is.EqualTo("0"));
             Assert.That(Soundbank_Standalone.Entries[1].Name, Is.EqualTo("1"));
             Assert.That(Soundbank_Standalone.Entries[2].Name, Is.EqualTo("2"));
             Assert.That(Soundbank_Standalone.Entries[11].Name, Is.EqualTo("11"));
+        }
+
+        [Test]
+        public void ParseSoundbankSbrStandalone_Header()
+        {
+            EAAudioHeader header = Soundbank_Standalone.Entries[0].Header;
+
+            Assert.That(header.Version, Is.EqualTo(EAAudioVersion.Version1));
+            Assert.That(header.Codec, Is.EqualTo(EAAudioCodec.EALayer3_V2_PCM));
+            Assert.That(header.ChannelConfig, Is.EqualTo(1));
+            Assert.That(header.Channels, Is.EqualTo(2));
+            Assert.That(header.SampleRate, Is.EqualTo(44100));
+            Assert.That(header.TypeRaw, Is.EqualTo(1));
+            Assert.That(header.Type, Is.EqualTo(EAAudioType.Stream));
+            Assert.That(header.LoopFlag, Is.EqualTo(0));
+            Assert.That(header.NumberOfSamples, Is.EqualTo(47098));
         }
 
         // PARSE SBR ======================================================
@@ -187,6 +208,18 @@ namespace EASoundbankToolsTests
             Assert.That(Soundbank_Parse_Standalone.Entries[1].RawOffsetInSbr, Is.EqualTo(86564));
             Assert.That(Soundbank_Parse_Standalone.Entries[2].RawOffsetInSbr, Is.EqualTo(106080));
             Assert.That(Soundbank_Parse_Standalone.Entries[11].RawOffsetInSbr, Is.EqualTo(70160));
+
+            EAAudioHeader header = Soundbank_Parse_Standalone.Entries[0].Header;
+
+            Assert.That(header.Version, Is.EqualTo(EAAudioVersion.Version1));
+            Assert.That(header.Codec, Is.EqualTo(EAAudioCodec.EALayer3_V2_PCM));
+            Assert.That(header.ChannelConfig, Is.EqualTo(1));
+            Assert.That(header.Channels, Is.EqualTo(2));
+            Assert.That(header.SampleRate, Is.EqualTo(44100));
+            Assert.That(header.TypeRaw, Is.EqualTo(1));
+            Assert.That(header.Type, Is.EqualTo(EAAudioType.Stream));
+            Assert.That(header.LoopFlag, Is.EqualTo(0));
+            Assert.That(header.NumberOfSamples, Is.EqualTo(47098));
         }
 
         [Test]
@@ -210,5 +243,12 @@ namespace EASoundbankToolsTests
             Assert.That(Soundbank_Parse_NonStandalone_NewWave.Entries[2].Offset, Is.EqualTo(77880));
             Assert.That(Soundbank_Parse_NonStandalone_NewWave.Entries[6].Offset, Is.EqualTo(157544));
         }
+
+        // PARSE SBS =================================================
+        //[Test]
+        //public void ParseSbs_Version()
+        //{
+        //    Assert.That(Soundbank_ParseSbs.Entries[0].Header.Version, Is.EqualTo(1));
+        //}
     }
 }

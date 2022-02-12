@@ -1,6 +1,7 @@
 ﻿using EASoundbankTools.Model;
 using EASoundbankTools.Model.SBR;
 using EASoundbankTools.Parser.SBR;
+using EASoundbankTools.Parser.SBS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace EASoundbankTools.Parser
 {
     public class SoundbankParser
     {
-        public ISoundbank ParseSbrSbs(string SbrPath, string SbsPath)
+        public Soundbank_SbrSbs ParseSbrSbs(string SbrPath, string SbsPath)
         {
             Soundbank_SbrSbs soundbank = new Soundbank_SbrSbs();
             soundbank.SbrPath = SbrPath;
@@ -21,11 +22,12 @@ namespace EASoundbankTools.Parser
             return soundbank;
         }
 
-        public ISoundbank ParseSbrStandalone(string SbrPath)
+        public Soundbank_SbrStandalone ParseSbrStandalone(string SbrPath)
         {
             Soundbank_SbrStandalone soundbank = new Soundbank_SbrStandalone();
             soundbank.SbrPath = SbrPath;
             soundbank.Entries = ParseSoundbankEntries(SbrPath);
+            AddEAAudioHeaderData(soundbank, SbrPath);
 
             return soundbank;
         }
@@ -36,7 +38,9 @@ namespace EASoundbankTools.Parser
             SBRFile file = parser.Parse(SbrPath);
             ISoundbank soundbank;
 
-            if (IsSbrFileStandalone(file))
+            bool isStandalone = IsSbrFileStandalone(file);
+
+            if (isStandalone)
             {
                 soundbank = new Soundbank_SbrStandalone();
             }
@@ -48,7 +52,23 @@ namespace EASoundbankTools.Parser
             soundbank.SbrPath = SbrPath;
             soundbank.Entries = ParseSoundbankEntries(file);
 
+            if (isStandalone)
+            {
+                AddEAAudioHeaderData(soundbank, SbrPath);
+            }
+
             return soundbank;
+        }
+
+        public void AddEAAudioHeaderData(ISoundbank Soundbank, string SbsPath)
+        {
+            SBSParser parser = new SBSParser();
+            SBSFile sbsFile = parser.ParseFromEntries(SbsPath, Soundbank.Entries);
+
+            for (var i = 0; i < Soundbank.Entries.Count; i++)
+            {
+                Soundbank.Entries[i].Header = sbsFile.Blocks[i].Header;
+            }
         }
 
         private List<SoundbankEntry> ParseSoundbankEntries(string SbrPath)
