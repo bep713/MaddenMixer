@@ -1,5 +1,6 @@
 using EASoundbankTools.Model;
 using EASoundbankTools.Parser;
+using Equin.ApplicationFramework;
 using System.Diagnostics;
 using System.Media;
 
@@ -266,7 +267,7 @@ namespace MaddenMixer
 
             var songToPlayIndex = dataGridView1.CurrentCell.RowIndex;
 
-            var job = await WavGenerator.GenerateFromFileAsync(LOADED_SBR_PATH, songToPlayIndex + 1);
+            var job = await WavGenerator.GenerateFromFileAsync(LOADED_SBR_PATH, soundbank.Entries[songToPlayIndex].SongOffset);
             log.AddToLog(job.StandardOutput);
             log.AddToLog(job.ErrorOutput);
 

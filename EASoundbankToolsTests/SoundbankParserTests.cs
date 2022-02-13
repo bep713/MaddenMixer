@@ -94,6 +94,15 @@ namespace EASoundbankToolsTests
             Assert.That(Soundbank_NewWave.Entries[2].Name, Is.EqualTo("2"));
             Assert.That(Soundbank_NewWave.Entries[6].Name, Is.EqualTo("6"));
         }
+
+        [Test]
+        public void ParseSoundbankSbrSbs_SongOffset_NewWave()
+        {
+            Assert.That(Soundbank_NewWave.Entries[0].SongOffset, Is.EqualTo(0));
+            Assert.That(Soundbank_NewWave.Entries[1].SongOffset, Is.EqualTo(1));
+            Assert.That(Soundbank_NewWave.Entries[2].SongOffset, Is.EqualTo(2));
+            Assert.That(Soundbank_NewWave.Entries[6].SongOffset, Is.EqualTo(6));
+        }
         
         /* HARMONY ====================================================== */
         [Test]
@@ -142,6 +151,23 @@ namespace EASoundbankToolsTests
             Assert.That(Soundbank_Harmony.Entries[55].Name, Is.EqualTo("55"));
         }
 
+        [Test]
+        public void ParseSoundbankSbrSbs_SongOffset_Harmony()
+        {
+            Assert.That(Soundbank_Harmony.Entries[14].SongOffset, Is.EqualTo(0));
+            Assert.That(Soundbank_Harmony.Entries[15].SongOffset, Is.EqualTo(0));
+            Assert.That(Soundbank_Harmony.Entries[39].SongOffset, Is.EqualTo(0));
+
+            Assert.That(Soundbank_Harmony.Entries[16].SongOffset, Is.EqualTo(1));
+            Assert.That(Soundbank_Harmony.Entries[17].SongOffset, Is.EqualTo(1));
+            Assert.That(Soundbank_Harmony.Entries[48].SongOffset, Is.EqualTo(1));
+
+            Assert.That(Soundbank_Harmony.Entries[12].SongOffset, Is.EqualTo(16));
+            Assert.That(Soundbank_Harmony.Entries[13].SongOffset, Is.EqualTo(16));
+            Assert.That(Soundbank_Harmony.Entries[38].SongOffset, Is.EqualTo(16));
+            Assert.That(Soundbank_Harmony.Entries[51].SongOffset, Is.EqualTo(16));
+        }
+
         /* STANDALONE ====================================================== */
         [Test]
         public void ParseSoundbankSbrStandalone_NumberOfEntries()
@@ -180,6 +206,17 @@ namespace EASoundbankToolsTests
             Assert.That(Soundbank_Standalone.Entries[1].Name, Is.EqualTo("1"));
             Assert.That(Soundbank_Standalone.Entries[2].Name, Is.EqualTo("2"));
             Assert.That(Soundbank_Standalone.Entries[11].Name, Is.EqualTo("11"));
+        }
+
+        [Test]
+        public void ParseSoundbankSbrStandalone_SongOffset()
+        {
+            Assert.That(Soundbank_Standalone.Entries[0].SongOffset, Is.EqualTo(0));
+
+            Assert.That(Soundbank_Standalone.Entries[3].SongOffset, Is.EqualTo(1));
+            Assert.That(Soundbank_Standalone.Entries[5].SongOffset, Is.EqualTo(1));
+
+            Assert.That(Soundbank_Standalone.Entries[2].SongOffset, Is.EqualTo(5));
         }
 
         [Test]

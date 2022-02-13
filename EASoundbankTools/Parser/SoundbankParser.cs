@@ -119,6 +119,22 @@ namespace EASoundbankTools.Parser
                     break;
             }
 
+            List<ulong> offsets = new List<ulong>();
+            foreach(var entry in soundbankEntries)
+            {
+                if (offsets.FindIndex(x => x == entry.Offset) == -1)
+                {
+                    offsets.Add(entry.Offset);
+                }
+            }
+
+            offsets.Sort();
+
+            foreach(var entry in soundbankEntries)
+            {
+                entry.SongOffset = offsets.FindIndex(x => x == entry.Offset);
+            }
+
             return soundbankEntries;
         }
 

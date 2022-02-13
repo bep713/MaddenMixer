@@ -9,10 +9,11 @@ namespace EASoundbankTools.Model
 {
     public class SoundbankEntry
     {
+        public EAAudioHeader Header { get; set; }
         public string Name { get; set; }
         public ulong Offset { get; set; }
         public ulong RawOffsetInSbr { get; set; }
-        public EAAudioHeader Header { get; set; }
+        public int SongOffset { get; set; }
         public EAAudioCodec Codec 
         { 
             get
