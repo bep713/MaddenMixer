@@ -9,6 +9,6 @@ namespace EASoundbankTools.Parser.SBR
     public interface IStoreTypeStrategy
     {
         public DSetField ParseValue(BinaryReader reader, DSetFieldDefinition definition, int index);
-        public void SetValue(DSetField field);
+        public void WriteValue(BinaryWriter writer, DSetFieldDefinition definition, ulong value);
     }
 }

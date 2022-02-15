@@ -103,6 +103,12 @@ namespace EASoundbankToolsTests
             Assert.That(Soundbank_NewWave.Entries[2].SongOffset, Is.EqualTo(2));
             Assert.That(Soundbank_NewWave.Entries[6].SongOffset, Is.EqualTo(6));
         }
+
+        [Test]
+        public void ParseSoundbankSbrSbs_SongTableStartPosition_NewWave()
+        {
+            Assert.That(Soundbank_NewWave.SongTableStartPosition, Is.EqualTo(1156));
+        }
         
         /* HARMONY ====================================================== */
         [Test]
@@ -168,6 +174,12 @@ namespace EASoundbankToolsTests
             Assert.That(Soundbank_Harmony.Entries[51].SongOffset, Is.EqualTo(16));
         }
 
+        [Test]
+        public void ParseSoundbankSbrSbs_SongTableStartPosition_Harmony()
+        {
+            Assert.That(Soundbank_Harmony.SongTableStartPosition, Is.EqualTo(552));
+        }
+
         /* STANDALONE ====================================================== */
         [Test]
         public void ParseSoundbankSbrStandalone_NumberOfEntries()
@@ -217,6 +229,12 @@ namespace EASoundbankToolsTests
             Assert.That(Soundbank_Standalone.Entries[5].SongOffset, Is.EqualTo(1));
 
             Assert.That(Soundbank_Standalone.Entries[2].SongOffset, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void ParseSoundbankSbrStandalone_SongTableStartPosition()
+        {
+            Assert.That(Soundbank_Standalone.SongTableStartPosition, Is.EqualTo(122512));
         }
 
         [Test]
@@ -282,10 +300,5 @@ namespace EASoundbankToolsTests
         }
 
         // PARSE SBS =================================================
-        //[Test]
-        //public void ParseSbs_Version()
-        //{
-        //    Assert.That(Soundbank_ParseSbs.Entries[0].Header.Version, Is.EqualTo(1));
-        //}
     }
 }

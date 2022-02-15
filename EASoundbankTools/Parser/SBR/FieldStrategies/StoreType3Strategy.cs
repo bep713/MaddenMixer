@@ -51,7 +51,7 @@ namespace EASoundbankTools.Parser.SBR
             return field;
         }
 
-        public void SetValue(DSetField field)
+        public void WriteValue(BinaryWriter writer, DSetFieldDefinition definition, ulong value)
         {
             throw new NotImplementedException();
         }

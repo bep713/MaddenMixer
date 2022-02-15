@@ -46,9 +46,30 @@ namespace EASoundbankTools.Parser.SBR
             return field;
         }
 
-        public void SetValue(DSetField field)
+        public void WriteValue(BinaryWriter writer, DSetFieldDefinition definition, ulong value)
         {
-            throw new NotImplementedException();
+            var shift = definition.StoreParam1 & 0xFF;
+            var valSize = (definition.StoreParam1 >> 8) & 0xFF;
+            var baseOffset = definition.StoreParam2;
+
+            value -= baseOffset;
+            value >>= shift;
+
+            switch (valSize)
+            {
+                case 1:
+                    writer.Write((byte)value);
+                    break;
+                case 2:
+                    writer.Write((ushort)value);
+                    break;
+                case 4:
+                    writer.Write((uint)value);
+                    break;
+                case 8:
+                    writer.Write(value);
+                    break;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace EASoundbankTools.Parser.SBR
             return dSetField;
         }
 
-        public void SetValue(DSetField field)
+        public void WriteValue(BinaryWriter writer, DSetFieldDefinition definition, ulong value)
         {
             throw new NotImplementedException();
         }

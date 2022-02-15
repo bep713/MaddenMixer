@@ -17,16 +17,39 @@ namespace EASoundbankTools.Parser
             Soundbank_SbrSbs soundbank = new Soundbank_SbrSbs();
             soundbank.SbrPath = SbrPath;
             soundbank.SbsPath = SbsPath;
-            soundbank.Entries = ParseSoundbankEntries(SbrPath);
+            ParseSbrCommon(soundbank, SbrPath);
 
             return soundbank;
+        }
+
+        private void ParseSbrCommon(ISoundbank soundbank, string sbrPath)
+        {
+            SBRParser parser = new SBRParser();
+            SBRFile file = parser.Parse(sbrPath);
+
+            soundbank.UnderlyingFile = file;
+            soundbank.Entries = ParseSoundbankEntries(file);
+            soundbank.SongOffsetDefinition = GetSongOffsetDefinition(file);
+            soundbank.SongTableStartPosition = soundbank.SongOffsetDefinition.TableOffset;
+        }
+        
+        private DSetFieldDefinition GetSongOffsetDefinition(SBRFile file)
+        {
+            switch (file.Header.SBRType)
+            {
+                default:
+                case SBRFile.SBRType.Harmony:
+                    return file.DSets[0].Definitions[0];
+                case SBRFile.SBRType.NewWaveResource:
+                    return file.DSets[3].Definitions[2];
+            }
         }
 
         public Soundbank_SbrStandalone ParseSbrStandalone(string SbrPath)
         {
             Soundbank_SbrStandalone soundbank = new Soundbank_SbrStandalone();
             soundbank.SbrPath = SbrPath;
-            soundbank.Entries = ParseSoundbankEntries(SbrPath);
+            ParseSbrCommon(soundbank, SbrPath);
             AddEAAudioHeaderData(soundbank, SbrPath);
 
             return soundbank;
@@ -50,7 +73,7 @@ namespace EASoundbankTools.Parser
             }
 
             soundbank.SbrPath = SbrPath;
-            soundbank.Entries = ParseSoundbankEntries(file);
+            ParseSbrCommon(soundbank, SbrPath);
 
             if (isStandalone)
             {
@@ -119,8 +142,21 @@ namespace EASoundbankTools.Parser
                     break;
             }
 
+            ParseSoundbankEntrySongOffsets(soundbankEntries);
+
+            return soundbankEntries;
+        }
+
+        public bool IsSbrFileStandalone(SBRFile file)
+        {
+            return file.Header.SBRType != SBRFile.SBRType.NewWaveResource
+                && file.DSets[0].Definitions.Find(x => x.Name == "OFF") == null;
+        }
+
+        private void ParseSoundbankEntrySongOffsets(List<SoundbankEntry> soundbankEntries)
+        {
             List<ulong> offsets = new List<ulong>();
-            foreach(var entry in soundbankEntries)
+            foreach (var entry in soundbankEntries)
             {
                 if (offsets.FindIndex(x => x == entry.Offset) == -1)
                 {
@@ -130,18 +166,10 @@ namespace EASoundbankTools.Parser
 
             offsets.Sort();
 
-            foreach(var entry in soundbankEntries)
+            foreach (var entry in soundbankEntries)
             {
                 entry.SongOffset = offsets.FindIndex(x => x == entry.Offset);
             }
-
-            return soundbankEntries;
-        }
-
-        public bool IsSbrFileStandalone(SBRFile file)
-        {
-            return file.Header.SBRType != SBRFile.SBRType.NewWaveResource
-                && file.DSets[0].Definitions.Find(x => x.Name == "OFF") == null;
         }
     }
 }

@@ -1,6 +1,5 @@
 using EASoundbankTools.Model;
 using EASoundbankTools.Parser;
-using Equin.ApplicationFramework;
 using System.Diagnostics;
 using System.Media;
 
