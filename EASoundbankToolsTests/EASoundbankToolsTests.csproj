@@ -49,4 +49,10 @@
     <ProjectReference Include="..\EASoundbankTools\EASoundbankTools.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\SoundbankParser\write_test\bruno.sbs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

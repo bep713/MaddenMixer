@@ -10,19 +10,16 @@ namespace EASoundbankTools.Parser.SBR
     {
         public DSetField ParseValue(BinaryReader reader, DSetFieldDefinition definition, int index)
         {
-            var indexBits = definition.StoreParam1 * 0xFF;
-            var valSize = (ulong)(definition.StoreParam1 >> 8) & 0xFF;
+            var valSize = (definition.StoreParam1 >> 8) & 0xFF;
             var numValues = definition.StoreParam2;
-            var indexOffset = definition.TableOffset + numValues * valSize;
+
+            if ((ulong)index >= numValues)
+            {
+                return null;
+            }
 
             var oldPosition = reader.BaseStream.Position;
-            reader.BaseStream.Position = (long)indexOffset + (index * indexBits);
-
-            var readByte = reader.ReadByte();
-            var shift = (index * indexBits) % 8;
-            readByte >>= shift;
-            var newIndex = readByte & ((1 << indexBits) - 1);
-            reader.BaseStream.Position = definition.TableOffset + (long)valSize * newIndex;
+            reader.BaseStream.Position = definition.TableOffset + (valSize * index);
 
             ulong value;
 
@@ -53,7 +50,24 @@ namespace EASoundbankTools.Parser.SBR
 
         public void WriteValue(BinaryWriter writer, DSetFieldDefinition definition, ulong value)
         {
-            throw new NotImplementedException();
+            var valSize = (definition.StoreParam1 >> 8) & 0xFF;
+
+            switch (valSize)
+            {
+                default:
+                case 1:
+                    writer.Write((byte)value);
+                    break;
+                case 2:
+                    writer.Write((ushort)value);
+                    break;
+                case 4:
+                    writer.Write((uint)value);
+                    break;
+                case 8:
+                    writer.Write(value);
+                    break;
+            }
         }
     }
 }

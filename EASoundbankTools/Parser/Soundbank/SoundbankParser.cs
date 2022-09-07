@@ -121,11 +121,17 @@ namespace EASoundbankTools.Parser
                     for (int i = 0; i < file.DSets[0].NumberOfElements; i++)
                     {
                         SoundbankEntry entry = new SoundbankEntry();
-                        entry.RawOffsetInSbr = file.DSets[0].Records[i].GetFieldValueByName(fieldNameWithOffsets);
-                        entry.Offset = entry.RawOffsetInSbr + additionalValueAdjustment;
-                        entry.Name = i.ToString();
 
-                        soundbankEntries.Add(entry);
+                        var rawOffsetInSbr = file.DSets[0].Records[i].GetFieldValueByName(fieldNameWithOffsets);
+
+                        if (rawOffsetInSbr != null)
+                        {
+                            entry.RawOffsetInSbr = (ulong)rawOffsetInSbr;
+                            entry.Offset = entry.RawOffsetInSbr + additionalValueAdjustment;
+                            entry.Name = i.ToString();
+
+                            soundbankEntries.Add(entry);
+                        }
                     }
                     break;
 

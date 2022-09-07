@@ -18,9 +18,9 @@ namespace EASoundbankTools.Model.SBR
             return Fields.Find(x => x.Name.Equals(name));
         }
 
-        public ulong GetFieldValueByName(string name)
+        public ulong? GetFieldValueByName(string name)
         {
-            return Fields.Find(x => x.Name.Equals(name)).Value;
+            return Fields.Find(x => x.Name.Equals(name))?.Value;
         }
     }
 }

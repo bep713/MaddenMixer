@@ -76,6 +76,9 @@ namespace EASoundbankToolsTests
             string TestWritePathSbs = TestWritePath + ".sbs";
             Soundbank_Harmony = Parser.ParseSbrSbs(TestWritePathSbr, TestWritePathSbs);
 
+            // Trying to replace a very large song that normally has very small songs.
+            // There are only 2 bytes to represent file size in the SBR, but this one needs 3 bytes
+            // That's why this test fails. Need to somehow detect this and edit all offsets in the SBR.
             Assert.That(Soundbank_Harmony.Entries[0].Offset, Is.EqualTo(entryOffset));
             Assert.That(Soundbank_Harmony.Entries[2].Offset, Is.EqualTo(entryOffset + songToWriteLength));
 

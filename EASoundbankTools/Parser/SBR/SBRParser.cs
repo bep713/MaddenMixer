@@ -118,9 +118,12 @@ namespace EASoundbankTools.Parser.SBR
         {
             IStoreTypeStrategy strategy = StoreTypeStrategyFactory.Create(definition.StoreType);
             DSetField field = strategy.ParseValue(reader, definition, index);
-            field.Name = definition.Name;
 
-            record.Fields.Add(field);
+            if (field != null)
+            {
+                field.Name = definition.Name;
+                record.Fields.Add(field);
+            }
         }
     }
 }

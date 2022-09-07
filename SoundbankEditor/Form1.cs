@@ -95,6 +95,7 @@ namespace MaddenMixer
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                    log.AddToLog(ex.Message);
                     editorState = EDITOR_STATE.INVALID_FILE_LOADED;
                 }
                 finally
@@ -240,7 +241,14 @@ namespace MaddenMixer
                 toolStripStatusLabel1.Text = "Conversion successful. Replacing...";
                 log.AddToLog("MP3 file conversion successful.");
 
+                var WriteOutputFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp\\conversion_write_result");
+
                 // Replace here
+                SoundbankWriter writer = new SoundbankWriter();
+                writer.WriteAndFixOffsets(soundbank, soundbank.Entries[dataGridView1.CurrentCell.RowIndex], job.OutputPath, WriteOutputFolder);
+
+                File.Copy(WriteOutputFolder + "_RAM.chunk", WriteOutputFolder + ".sbr", true);
+                File.Copy(WriteOutputFolder + "_STREAM.chunk", WriteOutputFolder + ".sbs", true);
 
                 toolStripStatusLabel1.Text = "Song replaced.";
                 ResetReplaceButton(dataGridView1.CurrentRow.Index);
@@ -266,7 +274,7 @@ namespace MaddenMixer
 
             var songToPlayIndex = dataGridView1.CurrentCell.RowIndex;
 
-            var job = await WavGenerator.GenerateFromFileAsync(LOADED_SBR_PATH, soundbank.Entries[songToPlayIndex].SongOffset);
+            var job = await WavGenerator.GenerateFromFileAsync(LOADED_SBR_PATH, songToPlayIndex + 1);
             log.AddToLog(job.StandardOutput);
             log.AddToLog(job.ErrorOutput);
 
